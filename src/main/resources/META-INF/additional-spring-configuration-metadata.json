@@ -1,0 +1,23 @@
+{
+  "properties": [
+    {
+      "name": "data.grip.postgres.create-function",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.create-function."
+    },
+    {
+      "name": "data.grip.postgres.schema",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.schema."
+    },
+    {
+      "name": "data.grip.postgres.select-tables.name",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.select-tables.name."
+    },
+    {
+      "name": "data.grip.postgres.select-tables.ddl",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.select-tables.ddl."
+    }
+  ] }
