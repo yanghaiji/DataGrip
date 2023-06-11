@@ -2,10 +2,7 @@ package com.javayh.data.grip.exec.execute;
 
 import com.javayh.data.grip.core.configuration.properties.DataGripProperties;
 import com.javayh.data.grip.core.configuration.properties.PostgresProperties;
-import com.javayh.data.grip.core.configuration.properties.common.FunctionProperties;
-import com.javayh.data.grip.core.configuration.properties.common.SelectTablesProperties;
-import com.javayh.data.grip.core.configuration.properties.common.SeqProperties;
-import com.javayh.data.grip.core.configuration.properties.common.ViewProperties;
+import com.javayh.data.grip.core.configuration.properties.common.*;
 import com.javayh.data.grip.core.exception.GenDdlException;
 import com.javayh.data.grip.core.template.DatasourceTemplate;
 import com.javayh.data.grip.core.template.TableNameArray;
@@ -102,7 +99,7 @@ public class PostgresDataSourceExecute implements DatasourceTemplate {
                 String comment = rs.getString(3);
                 tableNames.add(new TableNameArray(oid, tableName, comment));
             }
-            FunctionProperties functions = postgres.getFunctions();
+            CustomFunctionProperties functions = postgres.getCustomFunctions();
             if (functions.getDdlEnable()) {
                 // 创建查询所有便结构的函数，兼容所有postgres 版本
                 String functionSql = ReaderFile.getResource(functions.getDdl());
@@ -128,7 +125,7 @@ public class PostgresDataSourceExecute implements DatasourceTemplate {
         List<String> tableDdl = new LinkedList<>();
         try {
             stmt = conn.createStatement();
-            String functionName = postgres.getFunctions().getFunctionName();
+            String functionName = postgres.getCustomFunctions().getFunctionName();
             for (TableNameArray o : tableNames) {
                 String sql = "SELECT " + functionName + "( '" + o.getTableName() + "' )";
                 ResultSet rs = stmt.executeQuery(sql);
@@ -196,6 +193,31 @@ public class PostgresDataSourceExecute implements DatasourceTemplate {
                 viewDdlSql.add(viewCreationStatement);
             }
             return viewDdlSql;
+        } catch (SQLException e) {
+            log.error("{},{}", e.getErrorCode(), e);
+            throw new GenDdlException(e);
+        }
+    }
+    /**
+     * 查询创建函数ddl sql
+     *
+     * @return {@link List<String>} 创建函数的集合
+     */
+    public List<String> queryFunctionDdlSql() {
+        Connection conn = JdbcUtils.getConnection();
+        Statement stmt;
+        PostgresProperties postgres = dataGripProperties.getPostgres();
+        List<String> functionDdlSql = new LinkedList<>();
+        try {
+            stmt = conn.createStatement();
+            FunctionProperties functions = postgres.getFunctions();
+            String functionName = functions.getSelectFunctionName();
+            ResultSet rs = stmt.executeQuery(functionName);
+            while (rs.next()) {
+                String functionDdl = rs.getString("function_ddl");
+                functionDdlSql.add(functionDdl);
+            }
+            return functionDdlSql;
         } catch (SQLException e) {
             log.error("{},{}", e.getErrorCode(), e);
             throw new GenDdlException(e);

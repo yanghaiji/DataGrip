@@ -2,7 +2,6 @@ package com.javayh.data.grip.core.configuration.properties;
 
 import com.javayh.data.grip.core.configuration.properties.common.*;
 import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * @author haiji
@@ -15,7 +14,7 @@ public class PostgresProperties {
     /**
      * 为了兼容 pgsql的版本 需要创建函数
      */
-    private FunctionProperties functions;
+    private CustomFunctionProperties customFunctions;
 
     /**
      * select 相关语句
@@ -37,5 +36,11 @@ public class PostgresProperties {
      * 查询视图的语句
      */
     private ViewProperties views;
+
+
+    /**
+     * 查询视图的语句
+     */
+    private FunctionProperties functions;
 
 }
