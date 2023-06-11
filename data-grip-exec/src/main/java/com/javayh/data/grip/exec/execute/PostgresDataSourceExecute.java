@@ -48,10 +48,12 @@ public class PostgresDataSourceExecute implements DatasourceTemplate {
     public List<String> querySeqDdlSql() {
         Connection conn = JdbcUtils.getConnection();
         Statement stmt;
+        Statement stmtSetVal;
         List<String> createSeqSqlList = new LinkedList<>();
         try {
             SeqProperties sequences = dataGripProperties.getPostgres().getSequences();
             stmt = conn.createStatement();
+            stmtSetVal = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sequences.getSelectSeq());
             while (rs.next()) {
                 // sequence_name,start_value,minimum_value,maximum_value,increment
@@ -60,7 +62,7 @@ public class PostgresDataSourceExecute implements DatasourceTemplate {
                 String minimumValue = rs.getString("minimum_value");
                 String maximumValue = rs.getString("maximum_value");
                 String increment = rs.getString("increment");
-                ResultSet resultSet = stmt.executeQuery(sequences.getCurrVal().replace("currValue", sequenceName));
+                ResultSet resultSet = stmtSetVal.executeQuery(sequences.getCurrVal().replace("currValue", sequenceName));
                 while (resultSet.next()) {
                     startValue = resultSet.getString("nextval");
                 }
