@@ -1,0 +1,30 @@
+data:
+  grip:
+    postgres:
+      schema: public
+      functions:
+        function-name: generate_create_table_statement
+        ddl: datasource/pgsql/carete_funtion.sql
+        ddl-enable: false
+      select-tables:
+        name:
+          SELECT a.oid, a.relname AS name,b.description AS comment
+          FROM pg_class a
+          LEFT OUTER JOIN pg_description b ON b.objsubid=0 AND a.oid = b.objoid
+          WHERE a.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname= 'public')
+          AND a.relkind='r'
+          ORDER BY a.relname;
+      sequences:
+        enable: true
+        selectSeq:
+          SELECT sequence_name,start_value,minimum_value,maximum_value,increment
+          FROM information_schema.sequences
+          WHERE sequence_schema = 'public';
+        createSeq: CREATE SEQUENCE sequence_name INCREMENT BY increment_by   START WITH  start_value   MINVALUE minimum_value  MAXVALUE maximum_value  CYCLE
+        currVal: SELECT nextval('currValue')
+      indexes:
+        selectIndex: SELECT indexname, indexdef FROM pg_indexes WHERE schemaname = 'public';
+      views:
+        selectViewName: SELECT viewname, definition FROM pg_views WHERE schemaname = 'public'
+        selectViewDdl: SELECT definition FROM pg_views WHERE schemaname = 'public' AND viewname in( my_views );
+

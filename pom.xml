@@ -6,12 +6,20 @@
 
     <groupId>com.javayh.cdc.data.grip</groupId>
     <artifactId>data-grip</artifactId>
+    <packaging>pom</packaging>
     <version>1.0.0</version>
+    <modules>
+        <module>data-grip-core-starter</module>
+        <module>data-grip-exec</module>
+        <module>data-grip-jdbc-cdc</module>
+        <module>data-grip-flink-cdc</module>
+    </modules>
     <properties>
         <spring-boot.version>2.6.2</spring-boot.version>
         <flink.version>1.14.3</flink.version>
         <flink-pg-cdc.version>2.3.0</flink-pg-cdc.version>
         <scala.binary.version>2.12</scala.binary.version>
+        <java.version>8</java.version>
     </properties>
 
     <dependencies>
@@ -77,6 +85,11 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.javayh.cdc.data.grip</groupId>
+                <artifactId>data-grip-core-starter</artifactId>
+                <version>1.0.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

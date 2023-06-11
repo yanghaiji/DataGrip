@@ -1,0 +1,64 @@
+{
+  "properties": [
+    {
+      "name": "data.grip.postgres.schema",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.schema."
+    },
+    {
+      "name": "data.grip.postgres.functions.function-name",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.functions.function-name."
+    },
+    {
+      "name": "data.grip.postgres.functions.ddl",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.functions.ddl."
+    },
+    {
+      "name": "data.grip.postgres.functions.ddl-enable",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.functions.ddl-enable."
+    },
+    {
+      "name": "data.grip.postgres.select-tables.name",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.select-tables.name."
+    },
+    {
+      "name": "data.grip.postgres.sequences.enable",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.sequences.enable."
+    },
+    {
+      "name": "data.grip.postgres.sequences.selectSeq",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.sequences.selectSeq."
+    },
+    {
+      "name": "data.grip.postgres.sequences.createSeq",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.sequences.createSeq."
+    },
+    {
+      "name": "data.grip.postgres.indexes.selectIndex",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.indexes.selectIndex."
+    },
+    {
+      "name": "data.grip.postgres.views.selectViewName",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.views.selectViewName."
+    },
+    {
+      "name": "data.grip.postgres.views.selectViewDdl",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.views.selectViewDdl."
+    },
+    {
+      "name": "data.grip.postgres.sequences.currVal",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.sequences.currVal."
+    }
+  ]
+}
