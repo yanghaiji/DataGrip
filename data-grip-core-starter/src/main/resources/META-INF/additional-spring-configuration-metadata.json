@@ -6,19 +6,19 @@
       "description": "Description for data.grip.postgres.schema."
     },
     {
-      "name": "data.grip.postgres.functions.function-name",
+      "name": "data.grip.postgres.custom-functions.function-name",
       "type": "java.lang.String",
-      "description": "Description for data.grip.postgres.functions.function-name."
+      "description": "Description for data.grip.postgres.custom-functions.function-name."
     },
     {
-      "name": "data.grip.postgres.functions.ddl",
+      "name": "data.grip.postgres.custom-functions.ddl",
       "type": "java.lang.String",
-      "description": "Description for data.grip.postgres.functions.ddl."
+      "description": "Description for data.grip.postgres.custom-functions.ddl."
     },
     {
-      "name": "data.grip.postgres.functions.ddl-enable",
+      "name": "data.grip.postgres.custom-functions.ddl-enable",
       "type": "java.lang.String",
-      "description": "Description for data.grip.postgres.functions.ddl-enable."
+      "description": "Description for data.grip.postgres.custom-functions.ddl-enable."
     },
     {
       "name": "data.grip.postgres.select-tables.name",
@@ -59,6 +59,11 @@
       "name": "data.grip.postgres.sequences.currVal",
       "type": "java.lang.String",
       "description": "Description for data.grip.postgres.sequences.currVal."
+    },
+    {
+      "name": "data.grip.postgres.functions.selectFunctionName",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.functions.selectFunctionName."
     }
   ]
 }

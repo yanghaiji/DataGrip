@@ -12,8 +12,10 @@ import lombok.Data;
  * @since 2023-06-10
  */
 @Data
-public class FunctionProperties {
-    private String selectFunctionName;
-    private String functionDdl;
+public class CustomFunctionProperties {
+
+    private String functionName;
+    private String ddl;
     private Boolean ddlEnable;
+
 }
