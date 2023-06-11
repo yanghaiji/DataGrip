@@ -38,10 +38,12 @@ public class GenSqlController {
         List<String> seqDdl = createTable.querySeqDdlSql();
         List<String> indexesDdlSql = createTable.queryIndexesDdlSql();
         List<String> viewDdlSql = createTable.queryViewDdlSql();
+        List<String> functionDdlSql = createTable.queryFunctionDdlSql();
         FileUtils.writeLines(indexesDdlSql, "PostgresIndexesDdlSql.sql");
         FileUtils.writeLines(viewDdlSql, "PostgresViewDdlSql.sql");
         FileUtils.writeLines(crateTableDdlSql, "PostgresCrateTableDdlSql.sql");
         FileUtils.writeLines(seqDdl, "PostgresSeqDdl.sql");
+        FileUtils.writeLines(functionDdlSql, "PostgresFunctionsDdl.sql");
         Duration timeTakenToStartup = Duration.ofNanos(System.nanoTime() - startTime);
         log.info("Postgres database structure synchronization is complete ,{}", timeTakenToStartup);
     }

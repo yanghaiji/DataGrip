@@ -2,7 +2,7 @@ data:
   grip:
     postgres:
       schema: public
-      functions:
+      custom-functions:
         function-name: generate_create_table_statement
         ddl: datasource/pgsql/carete_funtion.sql
         ddl-enable: false
@@ -27,4 +27,7 @@ data:
       views:
         selectViewName: SELECT viewname, definition FROM pg_views WHERE schemaname = 'public'
         selectViewDdl: SELECT definition FROM pg_views WHERE schemaname = 'public' AND viewname in( my_views );
+      functions:
+        selectFunctionName: SELECT p.proname AS function_name,pg_get_functiondef ( p.oid ) AS function_ddl FROM pg_catalog.pg_proc p JOIN pg_catalog.pg_namespace n ON P.pronamespace = n.oid WHERE	n.nspname = 'public'
+
 

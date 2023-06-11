@@ -50,4 +50,11 @@ public interface DatasourceTemplate {
      */
     List<String> queryViewDdlSql();
 
+    /**
+     * 查询函数ddl sql
+     *
+     * @return {@link List<String>} 创建函数的集合
+     */
+    List<String> queryFunctionDdlSql();
+
 }
