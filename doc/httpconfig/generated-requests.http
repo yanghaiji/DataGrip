@@ -1,2 +1,5 @@
-###
+### 同步建表语句
 GET http://localhost:8080/datagrip/api/gen/pg
+
+### 同步数据
+GET http://localhost:8081/jdbc/cdc/pg/sync

@@ -64,6 +64,16 @@
       "name": "data.grip.postgres.functions.selectFunctionName",
       "type": "java.lang.String",
       "description": "Description for data.grip.postgres.functions.selectFunctionName."
+    },
+    {
+      "name": "data.grip.postgres.pageSize",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.pageSize."
+    },
+    {
+      "name": "data.grip.postgres.excludeTables",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.excludeTables."
     }
   ]
 }
