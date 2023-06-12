@@ -1,0 +1,6 @@
+data:
+  grip:
+    postgres:
+      schema: public
+      pageSize: 1000
+      excludeTables: sys_log,sys_maeil_log

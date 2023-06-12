@@ -11,5 +11,11 @@
 
     <artifactId>data-grip-jdbc-cdc</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.javayh.cdc.data.grip</groupId>
+            <artifactId>data-grip-core-starter</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -1,4 +1,4 @@
-package com.javayh.data.grip.core.template;
+package com.javayh.data.grip.core.template.datasource;
 
 import java.util.List;
 
