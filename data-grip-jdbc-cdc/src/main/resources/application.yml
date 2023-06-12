@@ -1,0 +1,40 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /jdbc/cdc/
+
+## 数据源配置
+spring:
+  profiles:
+    include: datagrip
+  datasource:
+    source:
+      driver-class-name: org.postgresql.Driver
+      jdbcUrl: jdbc:postgresql://localhost:5432/source?rewriteBatchedStatements=true
+      username: postgres
+      password: postgres
+      minimumIdle: 10
+      maximumPoolSize: 150
+      autoCommit: true
+      idleTimeout: 30000
+      poolName: source
+      maxLifetime: 60000
+      connectionTimeout: 60000
+      validationTimeout: 5000
+      readOnly: false
+      loginTimeout: 5
+    target:
+      driverClassName: org.postgresql.Driver
+      jdbcUrl: jdbc:postgresql://localhost:5432/target?rewriteBatchedStatements=true
+      username: postgres
+      password: postgres
+      minimumIdle: 10
+      maximumPoolSize: 30
+      autoCommit: true
+      idleTimeout: 30000
+      poolName: target
+      maxLifetime: 60000
+      connectionTimeout: 60000
+      validationTimeout: 5000
+      readOnly: false
+      loginTimeout: 5

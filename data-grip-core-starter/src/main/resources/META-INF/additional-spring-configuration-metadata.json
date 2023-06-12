@@ -59,6 +59,16 @@
       "name": "data.grip.postgres.sequences.currVal",
       "type": "java.lang.String",
       "description": "Description for data.grip.postgres.sequences.currVal."
+    },
+    {
+      "name": "data.grip.postgres.pageSize",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.pageSize."
+    },
+    {
+      "name": "data.grip.postgres.excludeTables",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.postgres.excludeTables."
     }
   ]
 }

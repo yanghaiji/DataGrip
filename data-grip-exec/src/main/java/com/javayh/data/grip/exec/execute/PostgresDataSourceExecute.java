@@ -7,8 +7,8 @@ import com.javayh.data.grip.core.configuration.properties.common.SelectTablesPro
 import com.javayh.data.grip.core.configuration.properties.common.SeqProperties;
 import com.javayh.data.grip.core.configuration.properties.common.ViewProperties;
 import com.javayh.data.grip.core.exception.GenDdlException;
-import com.javayh.data.grip.core.template.DatasourceTemplate;
-import com.javayh.data.grip.core.template.TableNameArray;
+import com.javayh.data.grip.core.template.datasource.DatasourceTemplate;
+import com.javayh.data.grip.core.template.datasource.TableNameArray;
 import com.javayh.data.grip.core.util.JdbcUtils;
 import com.javayh.data.grip.core.util.ReaderFile;
 import lombok.extern.slf4j.Slf4j;

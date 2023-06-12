@@ -2,7 +2,8 @@ package com.javayh.data.grip.core.configuration.properties;
 
 import com.javayh.data.grip.core.configuration.properties.common.*;
 import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.util.List;
 
 /**
  * @author haiji
@@ -11,6 +12,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class PostgresProperties {
 
     private String schema;
+
+    /**
+     * 每页的数据
+     */
+    private Integer pageSize = 1000;
+
+    /**
+     * 排除不同步的表
+     */
+    private List<String> excludeTables;
 
     /**
      * 为了兼容 pgsql的版本 需要创建函数

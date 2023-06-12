@@ -1,6 +1,6 @@
 package com.javayh.data.grip.exec.controller;
 
-import com.javayh.data.grip.core.template.TableNameArray;
+import com.javayh.data.grip.core.template.datasource.TableNameArray;
 import com.javayh.data.grip.core.util.FileUtils;
 import com.javayh.data.grip.exec.execute.PostgresDataSourceExecute;
 import lombok.extern.slf4j.Slf4j;
