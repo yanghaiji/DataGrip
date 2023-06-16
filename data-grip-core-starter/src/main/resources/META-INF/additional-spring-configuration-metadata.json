@@ -74,6 +74,16 @@
       "name": "data.grip.postgres.excludeTables",
       "type": "java.lang.String",
       "description": "Description for data.grip.postgres.excludeTables."
+    },
+    {
+      "name": "data.grip.oracle.pageSize",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.oracle.pageSize."
+    },
+    {
+      "name": "data.grip.oracle.excludeTables",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.oracle.excludeTables."
     }
   ]
 }

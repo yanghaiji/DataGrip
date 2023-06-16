@@ -3,3 +3,6 @@ GET http://localhost:8080/datagrip/api/gen/pg
 
 ### 同步数据
 GET http://localhost:8081/jdbc/cdc/pg/sync
+
+### orlace 同步 pgsql
+GET http://localhost:8081/jdbc/cdc/ora/pg/sync
