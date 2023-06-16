@@ -63,6 +63,8 @@ public class PostgresJdbcTask implements Runnable {
         List<String> excludeTables = dataGripProperties.getPostgres().getExcludeTables();
         for (String tableName : tableNames) {
             if (excludeTables.contains(tableName)) {
+                // 当有排除的表时，需要将计数器减一
+                latch.countDown();
                 // 跳过无效同步的表
                 continue;
             }
