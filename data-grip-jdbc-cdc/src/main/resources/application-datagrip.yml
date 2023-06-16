@@ -4,3 +4,6 @@ data:
       schema: public
       pageSize: 1000
       excludeTables: sys_log,sys_maeil_log
+    oracle:
+      pageSize: 1000
+      excludeTables: sys_log,sys_maeil_log

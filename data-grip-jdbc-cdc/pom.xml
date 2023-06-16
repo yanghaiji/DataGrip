@@ -11,10 +11,20 @@
 
     <artifactId>data-grip-jdbc-cdc</artifactId>
 
+    <properties>
+        <oracle.version>11.2.0.3</oracle.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.javayh.cdc.data.grip</groupId>
             <artifactId>data-grip-core-starter</artifactId>
+        </dependency>
+        <!--oracle驱动-->
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>${oracle.version}</version>
         </dependency>
     </dependencies>
 
