@@ -25,3 +25,30 @@
 - 将生成的的DDL语句，按需导入到target数据库
 - 通过`data-grip-jdbc-cdc`将source的数据全量同步到target的数据库中，支持排除无需同步的表
 
+# 实现模型
+
+## postgres to postgres
+
+![pg_migration](doc/img/pg_migration.png)
+
+可以通过以下接口进行数据传输
+```
+### 同步建表语句
+GET http://localhost:8080/datagrip/api/gen/pg
+
+### 同步数据
+GET http://localhost:8081/jdbc/cdc/pg/sync
+```
+
+
+## oracle to postgres
+
+![oracle_to_pgsql](doc/img/oracle_to_pgsql.png)
+
+可以通过以下接口进行数据传输
+```
+### orlace 同步 pgsql
+GET http://localhost:8081/jdbc/cdc/ora/pg/sync
+```
+
+目前 oracle ro postgres 仅支持表结构与数据的同步，暂不支持函数相关的迁移

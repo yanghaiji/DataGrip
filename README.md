@@ -6,7 +6,7 @@
 It will also support database schema conversion and data synchronization in the future, and we hope everyone can participate."
 
 
-# project structure
+# Project structure
 
 ```
 
@@ -28,3 +28,30 @@ It will also support database schema conversion and data synchronization in the 
 - Use `data-grip-jdbc-cdc` to synchronize all the source data to the target database, and support the exclusion of tables that do not need to be synchronized
 
 
+# Implementation Model Translation
+
+## postgres to postgres
+
+![pg_migration](doc/img/pg_migration.png)
+
+Data Transfer through the Following Interfaces Translation
+```
+### 同步建表语句
+GET http://localhost:8080/datagrip/api/gen/pg
+
+### 同步数据
+GET http://localhost:8081/jdbc/cdc/pg/sync
+```
+
+
+## oracle to postgres
+
+![oracle_to_pgsql](doc/img/oracle_to_pgsql.png)
+
+Data Transfer through the Following Interfaces Translation
+```
+### orlace 同步 pgsql
+GET http://localhost:8081/jdbc/cdc/ora/pg/sync
+```
+
+Currently, Oracle and PostgreSQL only support the synchronization of table structure and data, and do not support the migration of functions.
