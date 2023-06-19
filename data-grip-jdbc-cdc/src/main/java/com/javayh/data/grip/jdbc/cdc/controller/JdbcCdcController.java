@@ -1,7 +1,8 @@
 package com.javayh.data.grip.jdbc.cdc.controller;
 
 import com.javayh.data.grip.core.configuration.properties.DataGripProperties;
-import com.javayh.data.grip.core.migration.OracleToPostgresMigration;
+import com.javayh.data.grip.core.excutor.JdbcExecutorService;
+import com.javayh.data.grip.core.excutor.task.OracleToPostgresMigrationTask;
 import com.javayh.data.grip.jdbc.cdc.cdc.PostgresJdbcFullDataSyncExec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -39,6 +40,6 @@ public class JdbcCdcController {
 
     @GetMapping(value = "ora/pg/sync")
     public void oraPgSync() throws SQLException {
-        new OracleToPostgresMigration(sourceJdbcTemplate, targetJdbcTemplate, dataGripProperties).dataMigration();
+        JdbcExecutorService.executor().execute(new OracleToPostgresMigrationTask(sourceJdbcTemplate, targetJdbcTemplate, dataGripProperties));
     }
 }

@@ -1,13 +1,17 @@
 package com.javayh.data.grip.core.migration;
 
+import cn.hutool.json.JSONObject;
 import com.javayh.data.grip.core.configuration.properties.DataGripProperties;
 import com.javayh.data.grip.core.configuration.properties.OracleProperties;
 import com.javayh.data.grip.core.db.DbTypes;
-import com.javayh.data.grip.core.template.DataMigrationTemplate;
+import com.javayh.data.grip.core.template.DataBaseConvertTemplate;
+import com.javayh.data.grip.core.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.util.CollectionUtils;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -23,45 +27,39 @@ import java.util.stream.Collectors;
  * @author haiji
  */
 @Slf4j
-public class OracleToPostgresMigration extends DataMigrationTemplate {
+public class OracleToPostgresBaseConvertFlow extends DataBaseConvertTemplate {
 
     /**
      * Oracle 数据库的 JdbcTemplate
      */
-    private JdbcTemplate oracleJdbcTemplate;
+    private final JdbcTemplate oracleJdbcTemplate;
 
     /**
      * PostgresSQL 数据库的 JdbcTemplate
      */
-    private JdbcTemplate pgsqlJdbcTemplate;
+    private final JdbcTemplate pgsqlJdbcTemplate;
 
-    private DataGripProperties dataGripProperties;
+    private final DataGripProperties dataGripProperties;
 
-    public OracleToPostgresMigration(JdbcTemplate oracleJdbcTemplate,
-                                     JdbcTemplate pgsqlJdbcTemplate,
-                                     DataGripProperties dataGripProperties) {
+    public OracleToPostgresBaseConvertFlow(JdbcTemplate oracleJdbcTemplate,
+                                           JdbcTemplate pgsqlJdbcTemplate,
+                                           DataGripProperties dataGripProperties) {
         this.oracleJdbcTemplate = oracleJdbcTemplate;
         this.pgsqlJdbcTemplate = pgsqlJdbcTemplate;
         this.dataGripProperties = dataGripProperties;
     }
 
+
     /**
-     * 数据转出管道
+     * 查询所有的表
+     *
+     * @return {@link List<String> 数据所有的表}
      */
-    public void dataMigration() {
-        // 获取 Oracle 数据库中的表信息（表名、字段名、数据类型等）
-        List<Map<String, Object>> tables = oracleJdbcTemplate.queryForList("SELECT * FROM USER_TABLES");
-        for (Map<String, Object> table : tables) {
-            List<String> excludeTables = dataGripProperties.getOracle().getExcludeTables();
-            String tableName = (String) table.get("TABLE_NAME");
-            if (!excludeTables.contains(tableName)) {
-                // 创建 PostgresSQL 数据库的表
-                createTable(tableName);
-                // 迁移数据
-                migrateData(tableName);
-            }
-        }
+    @Override
+    public List<Map<String, Object>> queryTables() {
+        return oracleJdbcTemplate.queryForList("SELECT * FROM USER_TABLES");
     }
+
 
     /**
      * 创建 PostgreSQL 数据库的表
@@ -70,7 +68,7 @@ public class OracleToPostgresMigration extends DataMigrationTemplate {
      * @return ddl sql
      */
     @Override
-    protected void createTable(String tableName) {
+    public void createTable(String tableName) {
         StringBuilder sql = new StringBuilder("CREATE TABLE IF NOT EXISTS ");
         sql.append(tableName).append("(");
         // 查询 Oracle 数据库中表的字段信息
@@ -124,7 +122,7 @@ public class OracleToPostgresMigration extends DataMigrationTemplate {
      * @param tableName {@link String} 数据库表名
      */
     @Override
-    protected void migrateData(String tableName) {
+    public void migrateData(String tableName) {
         int page = 0;
         boolean hasNextPage = true;
         // 假设每页查询1000条数据
@@ -135,31 +133,77 @@ public class OracleToPostgresMigration extends DataMigrationTemplate {
             if (data.isEmpty()) {
                 hasNextPage = false;
             } else {
-                // 排除 RN : 由于 oracle 查询是带出来的行号，但是在真是的数据传输时不需要这个行号，需要剔除
-                Set<String> fields = data.get(0).keySet();
-                String insertSql = "INSERT INTO " + tableName + " (" +
-                        StringUtils.join(fields.stream().filter(o -> !"RN".equals(o)).collect(Collectors.toList()), ", ") + ")" +
-                        " VALUES (" + StringUtils.repeat("?", ", ", fields.size() - 1) + ")";
-                pgsqlJdbcTemplate.batchUpdate(insertSql, new BatchPreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        Map<String, Object> row = data.get(i);
-                        row.remove("RN");
-                        int idx = 1;
-                        for (Object value : row.values()) {
-                            ps.setObject(idx++, value);
+                try {
+                    // 排除 RN : 由于 oracle 查询是带出来的行号，但是在真是的数据传输时不需要这个行号，需要剔除
+                    Set<String> fields = data.get(0).keySet();
+                    String insertSql = "INSERT INTO " + tableName + " (" +
+                            StringUtils.join(fields.stream().filter(o -> !"RN".equals(o)).collect(Collectors.toList()), ", ") + ")" +
+                            " VALUES (" + StringUtils.repeat("?", ", ", fields.size() - 1) + ")";
+                    pgsqlJdbcTemplate.batchUpdate(insertSql, new BatchPreparedStatementSetter() {
+                        @Override
+                        public void setValues(PreparedStatement ps, int i) throws SQLException {
+                            Map<String, Object> row = data.get(i);
+                            row.remove("RN");
+                            int idx = 1;
+                            for (Object value : row.values()) {
+                                ps.setObject(idx++, value);
+                            }
                         }
-                    }
 
-                    @Override
-                    public int getBatchSize() {
-                        return data.size();
-                    }
-                });
-
+                        @Override
+                        public int getBatchSize() {
+                            return data.size();
+                        }
+                    });
+                } catch (DataAccessException e) {
+                    log.error("数据同步失败，tableName  {},{}", tableName, e);
+                    JSONObject entries = new JSONObject();
+                    entries.append("tableName", tableName)
+                            .append("page", page);
+                    FileUtils.appendUtf8Lines(entries.toString());
+                }
             }
             page++;
         }
+    }
+
+    /**
+     * 视图转换
+     */
+    @Override
+    public void convertView() {
+        String namespace = dataGripProperties.getOracle().getNamespace();
+        String user = dataGripProperties.getOracle().getUser();
+        List<String> viewNames = oracleJdbcTemplate.queryForObject(String.format("SELECT object_name FROM all_objects WHERE object_type ='VIEW' AND owner = '%s' ", user), List.class);
+        if (!CollectionUtils.isEmpty(viewNames)) {
+            viewNames.forEach(viewName -> {
+                String viewDefinition = oracleJdbcTemplate.queryForObject(
+                        String.format("SELECT DBMS_METADATA.GET_DDL('VIEW', '%s', '%s') FROM DUAL",
+                                viewName, namespace), String.class);
+                pgsqlJdbcTemplate.execute(viewDefinition);
+            });
+        }
+
+    }
+
+    /**
+     * 函数转换
+     */
+    @Override
+    public void convertFunction() {
+        OracleProperties oracle = dataGripProperties.getOracle();
+        String namespace = oracle.getNamespace();
+        String user = oracle.getUser();
+        List<String> functionNames = oracleJdbcTemplate.queryForObject(String.format("SELECT object_name FROM all_objects WHERE object_type ='FUNCTION' AND owner = '%s' ", user), List.class);
+        if (!CollectionUtils.isEmpty(functionNames)) {
+            functionNames.forEach(functionName -> {
+                String functionDefinition = oracleJdbcTemplate.queryForObject(
+                        String.format("SELECT DBMS_METADATA.GET_DDL('FUNCTION', '%s', '%s') FROM DUAL",
+                                functionName, namespace), String.class);
+                pgsqlJdbcTemplate.execute(functionDefinition);
+            });
+        }
+
     }
 
     /**
@@ -173,6 +217,7 @@ public class OracleToPostgresMigration extends DataMigrationTemplate {
     private String getPagingSql(String tableName, int page, int pageSize) {
         int start = page * pageSize + 1;
         int end = (page + 1) * pageSize;
+        log.debug("tableName = {}, page = {} ,start = {} ,end = {} ", tableName, page, start, end);
         return "SELECT * FROM (SELECT ROWNUM rn, t.* FROM " + tableName + " t WHERE ROWNUM <= " + end + ") WHERE rn >= " + start;
     }
 
