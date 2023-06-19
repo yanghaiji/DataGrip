@@ -20,6 +20,11 @@ public class OracleProperties {
     private Integer pageSize = 1000;
 
     /**
+     * 有权限的 owner ,必填字段，否则会异常
+     */
+    private String user;
+
+    /**
      * 排除不同步的表
      */
     private List<String> excludeTables;

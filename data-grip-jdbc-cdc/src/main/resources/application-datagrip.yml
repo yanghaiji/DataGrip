@@ -7,3 +7,5 @@ data:
     oracle:
       pageSize: 1000
       excludeTables: sys_log,sys_maeil_log
+      # 需要是用权限查询 函数和视图的用户
+      user: ora

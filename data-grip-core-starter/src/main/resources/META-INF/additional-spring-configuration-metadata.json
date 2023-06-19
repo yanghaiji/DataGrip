@@ -84,6 +84,16 @@
       "name": "data.grip.oracle.excludeTables",
       "type": "java.lang.String",
       "description": "Description for data.grip.oracle.excludeTables."
+    },
+    {
+      "name": "data.grip.oracle.namespace",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.oracle.namespace."
+    },
+    {
+      "name": "data.grip.oracle.user",
+      "type": "java.lang.String",
+      "description": "Description for data.grip.oracle.user."
     }
   ]
 }
