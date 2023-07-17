@@ -10,11 +10,11 @@ It will also support database schema conversion and data synchronization in the 
 
 ```
 
-├───data-grip-core-starter  核心处理公共包
-├───data-grip-exec          数据库表结构的生成
-├───data-grip-flink-cdc     待开发
-├───data-grip-jdbc-cdc      数据同步组件
-└───doc                     相关文档               
+├───data-grip-core-starter  Core processing package
+├───data-grip-exec          Generation of database table structure
+├───data-grip-flink-cdc     To be developed
+├───data-grip-jdbc-cdc      Data synchronization element
+└───doc                     Related document               
 
 ```
 
@@ -36,10 +36,10 @@ It will also support database schema conversion and data synchronization in the 
 
 Data Transfer through the Following Interfaces Translation
 ```
-### 同步建表语句
+### Synchronous build statement
 GET http://localhost:8080/datagrip/api/gen/pg
 
-### 同步数据
+### Synchronous data
 GET http://localhost:8081/jdbc/cdc/pg/sync
 ```
 
@@ -50,7 +50,7 @@ GET http://localhost:8081/jdbc/cdc/pg/sync
 
 Data Transfer through the Following Interfaces Translation
 ```
-### orlace 同步 pgsql
+### orlace sync pgsql
 GET http://localhost:8081/jdbc/cdc/ora/pg/sync
 ```
 

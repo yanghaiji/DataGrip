@@ -30,6 +30,13 @@ public class GenSqlController {
     @Autowired
     private PostgresDataSourceExecute createTable;
 
+    /**
+     * 演示功能
+     * <p>
+     * 需要结合自己的实际项目进行取舍，如果没有函数，在执行函数时可能会报错，但是不影响整体的功能
+     *
+     * @throws SQLException
+     */
     @GetMapping(value = "pg")
     public void get() throws SQLException {
         long startTime = System.nanoTime();
